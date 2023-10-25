@@ -1,0 +1,261 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap");
+
+@import "src/theme/variables";
+@import "src/theme/fonts";
+
+* {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  font-size: 14px;
+  line-height: 1.2857;
+  font-weight: 400;
+  background: $bg;
+}
+
+/* Links */
+
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Common */
+
+aside,
+nav,
+footer,
+header,
+section,
+main {
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ul,
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+address {
+  font-style: normal;
+}
+
+/* Form */
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button,
+input[type="submit"] {
+  display: inline-block;
+  box-shadow: none;
+  background-color: transparent;
+  background: none;
+  cursor: pointer;
+}
+
+input:focus,
+input:active,
+button:focus,
+button:active {
+  outline: none;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+label {
+  cursor: pointer;
+}
+
+legend {
+  display: block;
+}
+
+.container {
+  max-width: 1470px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.btn {
+  font-family: "Nunito", sans-serif;
+  line-height: normal;
+}
+
+.header {
+  flex: 0 0 auto;
+  background: $white;
+  padding: 30px 0;
+
+  &Wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &Logo {
+    @include heading-md;
+    color: $gray-600;
+  }
+
+  &Profile {
+    display: flex;
+    gap: 10px;
+  }
+
+  &Btn {
+    font-family: "Nunito", sans-serif;
+    line-height: normal;
+  }
+}
+
+.main {
+  flex: 1 0 auto;
+  padding: 20px 0;
+
+  &Wrap {
+    display: flex;
+    gap: 20px;
+  }
+
+  &Content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+}
+
+.card {
+  background: $white;
+  width: 100%;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid $gray-200;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+
+  &WrapTask {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &Title {
+    color: $blue-light;
+    @include heading-lg;
+  }
+
+  &Subtitle {
+    color: $gray-900;
+    @include heading-sm;
+  }
+
+  &WrapBtn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &LeftBtn {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.add {
+  background: $white;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid $gray-200;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+
+  &Title {
+    @include heading-lg;
+  }
+
+  &Form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    gap: 10px;
+  }
+
+  &FormBtn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+.footer {
+  flex: 0 0 auto;
+}
