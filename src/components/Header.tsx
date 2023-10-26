@@ -10,6 +10,14 @@ export const Header: FC = () => {
     navigate("/add");
   };
 
+  const handleLogin = () => {
+    navigate("/auth");
+  };
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
+
   return (
     <div className="container">
       <div className="headerWrap">
@@ -20,10 +28,12 @@ export const Header: FC = () => {
           <Button onClick={handleAddTask} className="headerBtn" type="primary">
             Добавить задачу
           </Button>
-          <Button className="headerBtn" type="primary">
+          <Button onClick={handleLogin} className="headerBtn" type="primary">
             Войти
           </Button>
-          <Button className="headerBtn">Зарегестрироваться</Button>
+          <Button onClick={handleRegister} className="headerBtn">
+            Зарегестрироваться
+          </Button>
         </div>
       </div>
     </div>

@@ -254,6 +254,16 @@ legend {
     justify-content: center;
     gap: 20px;
   }
+
+  &Auth {
+    text-align: center;
+    @include text-md;
+    color: $gray-400;
+  }
+
+  &AuthLink {
+    color: $blue-light;
+  }
 }
 
 .footer {

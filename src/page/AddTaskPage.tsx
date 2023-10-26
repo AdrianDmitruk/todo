@@ -33,7 +33,7 @@ export const AddTaskPage: FC = () => {
     setSelectedDate(date);
   };
 
-  console.log(selectedDate);
+  console.log(selectedDate?.hour());
 
   return (
     <div className="container">
