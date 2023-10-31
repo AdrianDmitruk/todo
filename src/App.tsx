@@ -2,6 +2,7 @@ import { FC } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { AddTaskPage, AuthPage, MainPage } from "./page";
 import { Layouts } from "./components";
+import { PrivateRoute, PublicRoute } from "./router";
 
 const App: FC = () => {
   return (
@@ -9,10 +10,17 @@ const App: FC = () => {
       <HashRouter>
         <Routes>
           <Route element={<Layouts />}>
-            <Route path={"/"} element={<MainPage />} />
-            <Route path={"/add"} element={<AddTaskPage />} />
-            <Route path={"/auth"} element={<AuthPage type="login" />} />
-            <Route path={"/register"} element={<AuthPage type="register" />} />
+            <Route element={<PrivateRoute />}>
+              <Route path={"/"} element={<MainPage />} />
+              <Route path={"/add"} element={<AddTaskPage />} />
+            </Route>
+            <Route element={<PublicRoute />}>
+              <Route path={"/auth"} element={<AuthPage type="login" />} />
+              <Route
+                path={"/register"}
+                element={<AuthPage type="register" />}
+              />
+            </Route>
           </Route>
         </Routes>
       </HashRouter>
