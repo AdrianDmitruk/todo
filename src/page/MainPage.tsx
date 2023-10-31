@@ -1,10 +1,13 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import type { Dayjs } from "dayjs";
 
 import { Calendar, theme } from "antd";
 import type { CalendarProps } from "antd";
 import { Card } from "../components";
+
+import { fetchUser } from "../redux/user/async-actions";
+import { useAppDispatch } from "../redux/store";
 
 export const MainPage: FC = () => {
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
@@ -18,6 +21,12 @@ export const MainPage: FC = () => {
     border: `1px solid ${token.colorBorderSecondary}`,
     borderRadius: token.borderRadiusLG,
   };
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
 
   return (
     <div className="container">

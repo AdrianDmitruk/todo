@@ -3,11 +3,13 @@ import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectRegistrationData } from "../redux/auth/selectors";
+import { selectUserData } from "../redux/user/selectors";
 
 export const Header: FC = () => {
   const navigate = useNavigate();
 
   const { data } = useSelector(selectRegistrationData);
+  const { data: userData } = useSelector(selectUserData);
   const isAuth = !!data?.token;
 
   const handleAddTask = () => {
@@ -30,13 +32,19 @@ export const Header: FC = () => {
         </Link>
         <div className="headerProfile">
           {isAuth ? (
-            <Button
-              onClick={handleAddTask}
-              className="headerBtn"
-              type="primary"
-            >
-              Добавить задачу
-            </Button>
+            <>
+              <Button
+                onClick={handleAddTask}
+                className="headerBtn"
+                type="primary"
+              >
+                Добавить задачу
+              </Button>
+              <div>
+                <div>{userData?.firstName}</div>
+                <div>{userData?.lastName}</div>
+              </div>
+            </>
           ) : (
             <>
               <Button
