@@ -18,7 +18,7 @@ export const MainPage: FC = () => {
 
   useEffect(() => {
     dispatch(fetchUser());
-    dispatch(fetchTodo());
+    dispatch(fetchTodo({}));
   }, [dispatch]);
 
   return (

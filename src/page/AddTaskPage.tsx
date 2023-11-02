@@ -1,29 +1,34 @@
-import { FC, useState } from "react";
-import {
-  Input,
-  DatePicker,
-  DatePickerProps,
-  ConfigProvider,
-  Button,
-} from "antd";
+import React, { FC, useEffect } from "react";
+import { Input, DatePicker, ConfigProvider, Button } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import ruRU from "antd/es/locale/ru_RU";
 import "dayjs/locale/ru";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useForm, Controller } from "react-hook-form";
 import { ICreateTodo } from "../services/type";
-import { createTodo } from "../services/todoServices";
-import { useNavigate } from "react-router-dom";
+import { createTodo, getOneTodo } from "../services/todoServices";
+import { useNavigate, useParams } from "react-router-dom";
+import { Todo } from "../redux/todo/types";
 
-export const AddTaskPage: FC = () => {
+import cn from "classnames";
+
+interface AddTaskProps {
+  isEdit?: boolean;
+}
+
+export const AddTaskPage: FC<AddTaskProps> = ({ isEdit }) => {
   const { TextArea } = Input;
+  const { control, handleSubmit, formState, reset } = useForm<ICreateTodo>();
+  const { isDirty, isValid } = formState;
 
   dayjs.locale("ru");
 
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
 
-  const disabledDate: DatePickerProps["disabledDate"] = (current) => {
+  const [data, setData] = React.useState<Todo | undefined>(undefined);
+
+  const disabledDate = (current: Dayjs) => {
     const today = dayjs().startOf("day");
-    const selectedDate = dayjs(current).startOf("day");
+    const selectedDate = current.startOf("day");
     return selectedDate.isBefore(today);
   };
 
@@ -33,90 +38,126 @@ export const AddTaskPage: FC = () => {
 
   const navigate = useNavigate();
 
-  const formattedDate = selectedDate
-    ? `${selectedDate.date()}.${
-        selectedDate.month() + 1
-      }.${selectedDate.year()}`
-    : "";
+  const { id } = useParams<{ id: string | undefined }>();
 
-  const initialValues: ICreateTodo = {
-    title: "",
-    description: "",
-    date: null,
-  };
+  useEffect(() => {
+    if (id) {
+      getOneTodo(id).then((elem) => {
+        setData(elem.data);
+        const day = elem?.data?.day as number | undefined;
+        const month = elem?.data?.month as number | undefined;
+        const year = elem?.data?.year as number | undefined;
+
+        if (day !== undefined && month !== undefined && year !== undefined) {
+          const adjustedMonth = month - 1;
+          const date = dayjs().year(year).month(adjustedMonth).date(day);
+          setSelectedDate(date);
+        }
+      });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (isEdit && data) {
+      reset({
+        title: data.title,
+        description: data.description,
+        day: +data.day,
+        month: +data.month,
+        year: +data.year,
+      });
+    }
+  }, [isEdit, data]);
 
   const onSubmit = (values: ICreateTodo) => {
-    console.log(values);
-
     const params = {
       title: values.title,
       description: values.description,
-      date: formattedDate,
+      day: selectedDate && selectedDate.date(),
+      month: selectedDate && selectedDate.month() + 1,
+      year: selectedDate && selectedDate.year(),
     };
 
     createTodo(params).then((res) => res.status && navigate("/"));
   };
 
-  const validate = (values: ICreateTodo) => {
-    const errors: Partial<ICreateTodo> = {};
-
-    if (!values.title) {
-      errors.title = "Введите название задачи";
-    }
-
-    if (!values.description) {
-      errors.description = "Введите описание";
-    }
-
-    return errors;
-  };
-
   return (
-    <div className="container">
+    <div
+      className={cn("container", {
+        ["containerData"]: data,
+      })}
+    >
       <div className="add">
-        <h2 className="addTitle">Добавить задачу</h2>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={onSubmit}
-          validate={validate}
-        >
-          <Form className="addForm">
-            <Field
-              type="text"
-              name="title"
-              placeholder="Введите название задачи"
-              as={Input}
-              allowClear
+        <h2 className="addTitle">
+          {isEdit ? "Редактировать задачу" : "Добавить задачу"}
+        </h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="addForm">
+          <Controller
+            name="title"
+            control={control}
+            defaultValue={isEdit && data ? data.title : ""}
+            rules={{ required: "Введите название задачи" }}
+            render={({ field, fieldState }) => (
+              <div>
+                <Input
+                  {...field}
+                  placeholder="Введите название задачи"
+                  allowClear
+                />
+                {fieldState.invalid && (
+                  <div className="error-message">
+                    {fieldState.error?.message}
+                  </div>
+                )}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Введите описание" }}
+            render={({ field, fieldState }) => (
+              <div>
+                <TextArea
+                  {...field}
+                  placeholder="Введите описание"
+                  allowClear
+                />
+                {fieldState.invalid && (
+                  <div className="error-message">
+                    {fieldState.error?.message}
+                  </div>
+                )}
+              </div>
+            )}
+          />
+
+          <ConfigProvider locale={ruRU}>
+            <DatePicker
+              placeholder="Введите дату"
+              format="DD.MM.YYYY"
+              value={selectedDate}
+              disabledDate={disabledDate}
+              onChange={handleDateChange}
             />
-            <ErrorMessage name="title" component="div" />
+          </ConfigProvider>
 
-            <Field
-              name="description"
-              placeholder="Введите описание"
-              as={TextArea}
-              allowClear
-            />
-            <ErrorMessage name="description" component="div" />
-
-            <ConfigProvider locale={ruRU}>
-              <DatePicker
-                placeholder="Введите дату"
-                format="DD.MM.YYYY"
-                disabledDate={disabledDate}
-                onChange={handleDateChange}
-              />
-            </ConfigProvider>
-
-            <div className="addFormBtn">
-              <Button className="btn" type="primary" htmlType="submit">
-                Добавить
-              </Button>
-              <Button className="btn" onClick={() => {}}>
-                Назад
-              </Button>
-            </div>
-          </Form>
-        </Formik>
+          <div className="addFormBtn">
+            <Button
+              className="btn"
+              type="primary"
+              htmlType="submit"
+              disabled={!isDirty || !isValid}
+            >
+              {isEdit ? "Редактировать" : "Добавить"}
+            </Button>
+            <Button className="btn" onClick={() => navigate("/")}>
+              Назад
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

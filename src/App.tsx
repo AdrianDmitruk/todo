@@ -13,6 +13,7 @@ const App: FC = () => {
             <Route element={<PrivateRoute />}>
               <Route path={"/"} element={<MainPage />} />
               <Route path={"/add"} element={<AddTaskPage />} />
+              <Route path={"/edit/:id"} element={<AddTaskPage isEdit />} />
             </Route>
             <Route element={<PublicRoute />}>
               <Route path={"/auth"} element={<AuthPage type="login" />} />

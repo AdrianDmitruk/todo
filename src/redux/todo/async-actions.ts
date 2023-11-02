@@ -5,15 +5,26 @@ import { GET_TODOS } from "../../api/endpoint";
 
 import { setDataTodo } from "./slice";
 import { notification } from "antd";
-import { Todo } from "./types";
+import { ITodoParams, Todo } from "./types";
 import { AxiosResponse } from "axios";
 
 export const fetchTodo = createAsyncThunk(
   "todo/fetchTodoStatus",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (params: ITodoParams | undefined, { dispatch, rejectWithValue }) => {
+    const defaultParams: ITodoParams = {
+      day: new Date().getDate(),
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    };
+
+    const mergedParams: ITodoParams = {
+      ...defaultParams,
+      ...params,
+    };
+
     try {
       const response: AxiosResponse<Todo[]> = await axiosInstance.get<Todo[]>(
-        `${GET_TODOS}`
+        `${GET_TODOS}?day=${mergedParams.day}&month=${mergedParams.month}&year=${mergedParams.year}`
       );
       const data = response.data;
       dispatch(setDataTodo(data));
@@ -25,7 +36,6 @@ export const fetchTodo = createAsyncThunk(
         duration: 3,
         placement: "topRight",
       });
-
       return rejectWithValue(errorMessage);
     }
   }

@@ -6,6 +6,7 @@ import { useAppDispatch } from "../redux/store";
 import { fetchTodo } from "../redux/todo/async-actions";
 
 import cn from "classnames";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
   elem: Todo;
@@ -13,6 +14,8 @@ interface CardProps {
 
 export const Card: FC<CardProps> = (elem) => {
   const { title, description, timeTaken, _id, started, completed } = elem.elem;
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -52,6 +55,10 @@ export const Card: FC<CardProps> = (elem) => {
         dispatch(fetchTodo());
       }
     });
+  };
+
+  const handleEditTodo = () => {
+    navigate(`/edit/${_id}`);
   };
 
   return (
@@ -96,7 +103,11 @@ export const Card: FC<CardProps> = (elem) => {
         )}
 
         <div className="cardLeftBtn">
-          {!completed && <Button className="btn">Редактировать</Button>}
+          {!completed && (
+            <Button onClick={handleEditTodo} className="btn">
+              Редактировать
+            </Button>
+          )}
 
           <Button
             onClick={handleRemoveTodo}

@@ -1,0 +1,37 @@
+import { PickerLocale } from "./type";
+
+export const locale: PickerLocale = {
+  lang: {
+    locale: "ru",
+    placeholder: "Выберите дату",
+    rangePlaceholder: ["Начальная дата", "Конечная дата"],
+    today: "Сегодня",
+    now: "Сейчас",
+    backToToday: "Вернуться к сегодня",
+    ok: "OK",
+    clear: "Очистить",
+    month: "Месяц",
+    year: "Год",
+    timeSelect: "Выбрать время",
+    dateSelect: "Выбрать дату",
+    monthSelect: "Выбрать месяц",
+    yearSelect: "Выбрать год",
+    decadeSelect: "Выбрать десятилетие",
+    yearFormat: "YYYY",
+    dateFormat: "D.M.YYYY",
+    dayFormat: "D",
+    dateTimeFormat: "D.M.YYYY HH:mm:ss",
+    monthBeforeYear: true,
+    previousMonth: "Предыдущий месяц (PageUp)",
+    nextMonth: "Следующий месяц (PageDown)",
+    previousYear: "Предыдущий год (Control + left)",
+    nextYear: "Следующий год (Control + right)",
+    previousDecade: "Предыдущее десятилетие",
+    nextDecade: "Следующее десятилетие",
+    previousCentury: "Предыдущий век",
+    nextCentury: "Следующий век",
+  },
+  timePickerLocale: {
+    placeholder: "Выберите время",
+  },
+};
