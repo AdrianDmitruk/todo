@@ -1,18 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import axiosInstance from "../../api";
-import { GET_USER } from "../../api/endpoint";
+import { GET_TODOS } from "../../api/endpoint";
 
-import { setDataUser } from "./slice";
+import { setDataTodo } from "./slice";
 import { notification } from "antd";
-import { User } from "./types";
+import { Todo } from "./types";
+import { AxiosResponse } from "axios";
 
-export const fetchUser = createAsyncThunk(
-  "user/fetchUserStatus",
+export const fetchTodo = createAsyncThunk(
+  "todo/fetchTodoStatus",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.get<User>(`${GET_USER}`);
-      dispatch(setDataUser(data));
+      const response: AxiosResponse<Todo[]> = await axiosInstance.get<Todo[]>(
+        `${GET_TODOS}`
+      );
+      const data = response.data;
+      dispatch(setDataTodo(data));
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message;
       notification.error({

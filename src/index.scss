@@ -182,6 +182,7 @@ legend {
     flex-direction: column;
     width: 100%;
     gap: 20px;
+    justify-content: center;
   }
 }
 
@@ -195,6 +196,10 @@ legend {
   justify-content: space-between;
   gap: 10px;
 
+  &Complited {
+    background: $gray-200;
+  }
+
   &WrapTask {
     display: flex;
     flex-direction: column;
@@ -206,15 +211,30 @@ legend {
     @include heading-lg;
   }
 
+  &TitleComplited {
+    color: $gray-500;
+    text-decoration: line-through;
+  }
+
   &Subtitle {
     color: $gray-900;
     @include heading-sm;
+  }
+
+  &SubtitleComplited {
+    text-decoration: line-through;
   }
 
   &WrapBtn {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  &WrapBtnComplited {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 
   &LeftBtn {

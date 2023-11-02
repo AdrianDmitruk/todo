@@ -1,45 +1,39 @@
 import { FC, useEffect } from "react";
 
-import type { Dayjs } from "dayjs";
-
-import { Calendar, theme } from "antd";
-import type { CalendarProps } from "antd";
 import { Card } from "../components";
 
 import { fetchUser } from "../redux/user/async-actions";
 import { useAppDispatch } from "../redux/store";
+import { fetchTodo } from "../redux/todo/async-actions";
+import { MainCalendar } from "../components/MainCalendar";
+import { useSelector } from "react-redux";
+import { selectTodoData } from "../redux/todo/selectors";
+import { Spin } from "antd";
+import { Status } from "../redux/auth/types";
 
 export const MainPage: FC = () => {
-  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
-    console.log(value.format("YYYY-MM-DD"), mode);
-  };
-
-  const { token } = theme.useToken();
-
-  const wrapperStyle: React.CSSProperties = {
-    width: 300,
-    border: `1px solid ${token.colorBorderSecondary}`,
-    borderRadius: token.borderRadiusLG,
-  };
+  const { data, status } = useSelector(selectTodoData);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchUser());
-  }, []);
+    dispatch(fetchTodo());
+  }, [dispatch]);
 
   return (
     <div className="container">
       <div className="mainWrap">
         <div className="mainCalndar">
-          <div style={wrapperStyle}>
-            <Calendar fullscreen={false} onPanelChange={onPanelChange} />
-          </div>
+          <MainCalendar />
         </div>
+
         <div className="mainContent">
-          <Card />
-          <Card />
-          <Card />
+          {status === Status.LOADING ? (
+            <Spin size="large" />
+          ) : (
+            data.map((elem) => <Card key={elem._id} elem={elem} />)
+          )}
         </div>
       </div>
     </div>
