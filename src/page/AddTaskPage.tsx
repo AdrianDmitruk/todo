@@ -5,7 +5,7 @@ import ruRU from "antd/es/locale/ru_RU";
 import "dayjs/locale/ru";
 import { useForm, Controller } from "react-hook-form";
 import { ICreateTodo } from "../services/type";
-import { createTodo, getOneTodo } from "../services/todoServices";
+import { createTodo, getOneTodo, updateTodo } from "../services/todoServices";
 import { useNavigate, useParams } from "react-router-dom";
 import { Todo } from "../redux/todo/types";
 
@@ -70,7 +70,7 @@ export const AddTaskPage: FC<AddTaskProps> = ({ isEdit }) => {
   }, [isEdit, data]);
 
   const onSubmit = (values: ICreateTodo) => {
-    const params = {
+    const params: ICreateTodo & { _id?: string } = {
       title: values.title,
       description: values.description,
       day: selectedDate && selectedDate.date(),
@@ -78,7 +78,17 @@ export const AddTaskPage: FC<AddTaskProps> = ({ isEdit }) => {
       year: selectedDate && selectedDate.year(),
     };
 
-    createTodo(params).then((res) => res.status && navigate("/"));
+    if (isEdit) {
+      params._id = id;
+    }
+
+    const api = isEdit ? updateTodo : createTodo;
+
+    api(params).then((res) => {
+      if (res.status) {
+        navigate("/");
+      }
+    });
   };
 
   return (

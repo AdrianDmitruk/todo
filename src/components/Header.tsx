@@ -40,10 +40,9 @@ export const Header: FC = () => {
               >
                 Добавить задачу
               </Button>
-              <div>
-                <div>{userData?.firstName}</div>
-                <div>{userData?.lastName}</div>
-              </div>
+              <Link className="headerLink" to={"/profile"}>
+                {userData?.firstName} {userData?.lastName}
+              </Link>
             </>
           ) : (
             <>

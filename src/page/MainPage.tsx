@@ -11,6 +11,8 @@ import { selectTodoData } from "../redux/todo/selectors";
 import { Spin } from "antd";
 import { Status } from "../redux/auth/types";
 
+import cn from "classnames";
+
 export const MainPage: FC = () => {
   const { data, status } = useSelector(selectTodoData);
 
@@ -28,7 +30,11 @@ export const MainPage: FC = () => {
           <MainCalendar />
         </div>
 
-        <div className="mainContent">
+        <div
+          className={cn("mainContent", {
+            ["mainContentSpiner"]: status === Status.LOADING,
+          })}
+        >
           {status === Status.LOADING ? (
             <Spin size="large" />
           ) : (
