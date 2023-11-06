@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
-import { Footer, Header } from ".";
+import { Header } from ".";
 
 export const Layouts: FC = () => {
   return (
@@ -11,9 +11,6 @@ export const Layouts: FC = () => {
       <main className="main">
         <Outlet />
       </main>
-      <footer className="footer">
-        <Footer />
-      </footer>
     </div>
   );
 };

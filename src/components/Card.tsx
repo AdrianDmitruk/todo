@@ -7,6 +7,7 @@ import { fetchTodo } from "../redux/todo/async-actions";
 
 import cn from "classnames";
 import { useNavigate } from "react-router-dom";
+import { formatTime } from "../services/utils";
 
 interface CardProps {
   elem: Todo;
@@ -88,7 +89,7 @@ export const Card: FC<CardProps> = (elem) => {
           ["cardWrapBtnComplited"]: completed,
         })}
       >
-        {!!timeTaken && <div>Времени потрачено: {timeTaken}</div>}
+        {!!timeTaken && <div>Времени потрачено: {formatTime(timeTaken)}</div>}
 
         {!!started && !timeTaken && (
           <Button onClick={handleEndTodo} className="btn" type="dashed">
