@@ -201,6 +201,18 @@ legend {
   &ContentSpiner {
     justify-content: center;
   }
+
+  &Not {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &NotTitle {
+    @include heading-lg;
+    color: $blue-light;
+  }
 }
 
 .card {
